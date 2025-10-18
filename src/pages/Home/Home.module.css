@@ -1,0 +1,13 @@
+/* Estilos para la página Home */
+.homeContainer {
+  min-height: 80vh;
+}
+
+.display-4 {
+  margin-bottom: 1.5rem;
+}
+
+.lead {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+}

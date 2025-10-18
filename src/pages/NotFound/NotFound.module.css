@@ -1,0 +1,11 @@
+/* Estilos para la página NotFound */
+.notFoundContainer {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+}
+
+.display-1 {
+  font-size: 8rem;
+  line-height: 1;
+}

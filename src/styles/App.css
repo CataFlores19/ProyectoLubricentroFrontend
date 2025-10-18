@@ -1,0 +1,18 @@
+/* Estilos específicos del componente App */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  padding-top: 2rem;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  main {
+    padding-top: 1rem;
+  }
+}
