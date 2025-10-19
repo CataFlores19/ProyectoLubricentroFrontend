@@ -7,12 +7,15 @@
 
 main {
   flex: 1;
+}
+
+main.container-fluid {
   padding-top: 2rem;
 }
 
 /* Estilos responsivos */
 @media (max-width: 768px) {
-  main {
+  main.container-fluid {
     padding-top: 1rem;
   }
 }
