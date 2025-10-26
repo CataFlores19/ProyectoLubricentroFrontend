@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './Home.module.css'
 
+const API_URL = 'http://localhost:5000/api/auth/login'
+
 const Home = () => {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
@@ -17,11 +19,31 @@ const Home = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Datos del formulario:', formData)
-    // Navegar al dashboard sin validación (por ahora)
-    navigate('/dashboard')
+    
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          RUN: formData.rut,
+          Password: formData.password
+        })
+      })
+      
+      const data = await response.json()
+      
+      if (response.ok) {
+        localStorage.setItem('token', data.token)
+        navigate('/dashboard')
+      }
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error)
+      navigate('/dashboard')
+    }
   }
 
   return (
@@ -35,6 +57,7 @@ const Home = () => {
                 <div className="text-center mb-4">
                   <h2 className="fw-bold mt-3 mb-2">Lubricentro</h2>
                   <p className="text-muted">Sistema de Administración</p>
+                  <p className="text-muted">De momento usar cualquier dato para acceder</p>
                 </div>
 
                 {/* Formulario de Login */}

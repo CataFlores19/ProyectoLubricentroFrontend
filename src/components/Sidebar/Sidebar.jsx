@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styles from './Sidebar.module.css'
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -46,10 +47,10 @@ const Sidebar = ({ isOpen, onClose }) => {
         <ul className={styles.menuList}>
           {menuItems.map((item, index) => (
             <li key={index} className={styles.menuItem}>
-              <a href="#" className={styles.menuLink}>
+              <Link to={item.path} className={styles.menuLink}>
                 <i className={`bi ${item.icon} ${styles.menuIcon}`}></i>
                 <span>{item.title}</span>
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

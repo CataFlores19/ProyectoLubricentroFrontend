@@ -1,6 +1,8 @@
 # Proyecto Final Frontend - React
 
-Este es un proyecto frontend desarrollado en React 18 con Vite como herramienta de construcción. Está preparado para conectarse con una API backend
+Este es un proyecto frontend desarrollado en React 18 con Vite como herramienta de construcción. Está preparado para conectarse con una API backend.
+
+Si el sistema no puede obtener la data desde el backend, se mostrará un mensaje de error en la interfaz de usuario y utilizara datos ficticios.
 
 ## Tecnologías Utilizadas
 
@@ -12,7 +14,7 @@ Este es un proyecto frontend desarrollado en React 18 con Vite como herramienta 
 - **Fetch API** - Para conexiones con API REST
 
 
-## 🛠️ Instalación
+## Instalación
 
 1. Clona el repositorio:
 ```bash
@@ -35,15 +37,5 @@ npm run dev
 ## Scripts Disponibles
 
 - `npm run dev` - Inicia el servidor de desarrollo
-- `npm run build` - Construye la aplicación para producción
-- `npm run preview` - Previsualiza la construcción de producción
-- `npm run lint` - Ejecuta el linter de código
 
-## 🔧 Configuración de API
-
-El proyecto incluye un servicio de API preconfigurado en `src/services/apiService.js`. Para conectarte a tu API backend:
-
-1. Modifica la constante `API_BASE_URL` en `apiService.js`
-2. Ajusta los headers según las necesidades de tu API
-3. Utiliza los métodos `get`, `post`, `put`, `delete` según sea necesario
 
