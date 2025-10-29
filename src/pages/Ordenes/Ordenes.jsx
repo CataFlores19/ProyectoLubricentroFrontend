@@ -4,6 +4,7 @@ import Card from '../../components/Card/Card'
 import Button from '../../components/Button/Button'
 import Loading from '../../components/Loading/Loading'
 import Toast from '../../components/Toast/Toast'
+import { fetchWithAuth, postWithAuth } from '../../utils/api'
 import styles from './Ordenes.module.css'
 
 const API_URL = 'http://localhost:5000/api/work-orders'
@@ -33,15 +34,11 @@ const Ordenes = () => {
     try {
       setLoading(true)
       
-      const [ordenesRes, vehiculosRes, mecanicosRes] = await Promise.all([
-        fetch(API_URL),
-        fetch(API_VEHICULOS_URL),
-        fetch(API_MECANICOS_URL)
+      const [ordenesResult, vehiculosResult, mecanicosResult] = await Promise.all([
+        fetchWithAuth(API_URL),
+        fetchWithAuth(API_VEHICULOS_URL),
+        fetchWithAuth(API_MECANICOS_URL)
       ])
-      
-      const ordenesResult = await ordenesRes.json()
-      const vehiculosResult = await vehiculosRes.json()
-      const mecanicosResult = await mecanicosRes.json()
       
       setOrdenes(ordenesResult.data || [])
       setVehiculos(vehiculosResult.data || [])
@@ -149,20 +146,7 @@ const Ordenes = () => {
         UserID: parseInt(formData.UserID)
       }
       
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSend)
-      })
-      
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Error al crear la orden')
-      }
-      
-      const nuevaOrden = await response.json()
+      const nuevaOrden = await postWithAuth(API_URL, dataToSend)
       
       // Limpiar formulario y cerrar
       setFormData({

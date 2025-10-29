@@ -4,6 +4,7 @@ import Card from '../../components/Card/Card'
 import Button from '../../components/Button/Button'
 import Loading from '../../components/Loading/Loading'
 import Toast from '../../components/Toast/Toast'
+import { fetchWithAuth, postWithAuth } from '../../utils/api'
 import styles from './Usuarios.module.css'
 
 const API_URL = 'http://localhost:5000/api/users'
@@ -33,13 +34,10 @@ const Usuarios = () => {
     try {
       setLoading(true)
       
-      const [usuariosRes, rolesRes] = await Promise.all([
-        fetch(API_URL),
-        fetch(API_ROLES_URL)
+      const [usuariosResult, rolesResult] = await Promise.all([
+        fetchWithAuth(API_URL),
+        fetchWithAuth(API_ROLES_URL)
       ])
-      
-      const usuariosResult = await usuariosRes.json()
-      const rolesResult = await rolesRes.json()
       
       setUsuarios(usuariosResult.data || [])
       setRoles(rolesResult.data || [])
@@ -116,23 +114,10 @@ const Usuarios = () => {
     e.preventDefault()
     
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          RoleID: parseInt(formData.RoleID) // Convertir a número
-        })
+      const nuevoUsuario = await postWithAuth(API_URL, {
+        ...formData,
+        RoleID: parseInt(formData.RoleID) // Convertir a número
       })
-      
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Error al crear el usuario')
-      }
-      
-      const nuevoUsuario = await response.json()
       
       // Limpiar formulario y cerrar
       setFormData({

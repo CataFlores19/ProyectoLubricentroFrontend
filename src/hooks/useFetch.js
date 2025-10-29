@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
+import { getAuthHeaders } from '../utils/api'
 
-// Custom hook para fetch de datos
+// Custom hook para fetch de datos con autenticación JWT
 export const useFetch = (url, options = {}) => {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -14,7 +15,7 @@ export const useFetch = (url, options = {}) => {
         
         const response = await fetch(url, {
           headers: {
-            'Content-Type': 'application/json',
+            ...getAuthHeaders(),
             ...options.headers,
           },
           ...options,

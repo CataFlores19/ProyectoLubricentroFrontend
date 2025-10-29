@@ -5,6 +5,7 @@ import Card from '../../components/Card/Card'
 import Button from '../../components/Button/Button'
 import Loading from '../../components/Loading/Loading'
 import Toast from '../../components/Toast/Toast'
+import { fetchWithAuth, postWithAuth } from '../../utils/api'
 import styles from './Vehiculos.module.css'
 
 const API_URL = 'http://localhost:5000/api/vehicles'
@@ -41,13 +42,10 @@ const Vehiculos = () => {
     try {
       setLoading(true)
       
-      const [vehiculosRes, clientesRes] = await Promise.all([
-        fetch(API_URL),
-        fetch(API_CLIENTES_URL)
+      const [vehiculosResult, clientesResult] = await Promise.all([
+        fetchWithAuth(API_URL),
+        fetchWithAuth(API_CLIENTES_URL)
       ])
-      
-      const vehiculosResult = await vehiculosRes.json()
-      const clientesResult = await clientesRes.json()
       
       setVehiculos(vehiculosResult.data || [])
       setClientes(clientesResult.data || [])
@@ -144,20 +142,7 @@ const Vehiculos = () => {
         Year: parseInt(formData.Year) || null
       }
       
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSend)
-      })
-      
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Error al crear el vehículo')
-      }
-      
-      const nuevoVehiculo = await response.json()
+      const nuevoVehiculo = await postWithAuth(API_URL, dataToSend)
       
       // Limpiar formulario y cerrar
       setFormData({

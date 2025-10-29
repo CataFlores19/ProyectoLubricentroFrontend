@@ -5,6 +5,7 @@ import Card from '../../components/Card/Card'
 import Button from '../../components/Button/Button'
 import Loading from '../../components/Loading/Loading'
 import Toast from '../../components/Toast/Toast'
+import { fetchWithAuth, postWithAuth } from '../../utils/api'
 import styles from './Clientes.module.css'
 
 const API_URL = 'http://localhost:5000/api/clients'
@@ -38,8 +39,7 @@ const Clientes = () => {
   const cargarClientes = async () => {
     try {
       setLoading(true)
-      const response = await fetch(API_URL)
-      const result = await response.json()
+      const result = await fetchWithAuth(API_URL)
       setClientes(result.data || [])
     } catch (error) {
       console.error('Error al cargar clientes:', error)
@@ -95,19 +95,7 @@ const Clientes = () => {
     e.preventDefault()
     
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      })
-      
-      if (!response.ok) {
-        throw new Error('Error al crear el cliente')
-      }
-      
-      const nuevoCliente = await response.json()
+      const nuevoCliente = await postWithAuth(API_URL, formData)
       
       // Limpiar formulario y cerrar
       setFormData({

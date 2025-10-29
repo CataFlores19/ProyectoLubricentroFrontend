@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Toast from '../../components/Toast/Toast'
 import styles from './Home.module.css'
 
 const API_URL = 'http://localhost:5000/api/auth/login'
@@ -10,6 +11,7 @@ const Home = () => {
     rut: '',
     password: ''
   })
+  const [toast, setToast] = useState(null)
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -38,16 +40,27 @@ const Home = () => {
       
       if (response.ok) {
         localStorage.setItem('token', data.token)
-        navigate('/dashboard')
+        setToast({ message: 'Inicio de sesión exitoso', type: 'success' })
+        setTimeout(() => navigate('/dashboard'), 1000)
+      } else {
+        setToast({ message: 'Credenciales incorrectas. Verifica tu RUT y contraseña.', type: 'error' })
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error)
-      navigate('/dashboard')
+      setToast({ message: 'Error de conexión. Usando modo de prueba.', type: 'error' })
+      setTimeout(() => navigate('/dashboard'), 1500)
     }
   }
 
   return (
     <div className={styles.loginContainer}>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
       <div className="container-fluid">
         <div className="row justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
           <div className="col-12 col-md-8 col-lg-5">
@@ -57,7 +70,12 @@ const Home = () => {
                 <div className="text-center mb-4">
                   <h2 className="fw-bold mt-3 mb-2">Lubricentro</h2>
                   <p className="text-muted">Sistema de Administración</p>
-                  <p className="text-muted">De momento usar cualquier dato para acceder</p>
+                  <div className="alert alert-info py-2 mb-0">
+                    <small>
+                      <strong>Usuario de prueba:</strong><br />
+                      RUT: <code>12345678-9</code> | Contraseña: <code>password123</code>
+                    </small>
+                  </div>
                 </div>
 
                 {/* Formulario de Login */}
@@ -76,7 +94,7 @@ const Home = () => {
                         className="form-control form-control-lg"
                         id="rut"
                         name="rut"
-                        placeholder="Ej: 12345678-9"
+                        placeholder="12345678-9"
                         value={formData.rut}
                         onChange={handleChange}
                         required
@@ -98,7 +116,7 @@ const Home = () => {
                         className="form-control form-control-lg"
                         id="password"
                         name="password"
-                        placeholder="Ingrese su contraseña"
+                        placeholder="password123"
                         value={formData.password}
                         onChange={handleChange}
                         required
